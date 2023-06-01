@@ -4,12 +4,12 @@ package ordinario;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -42,6 +42,11 @@ public class DBManager {
     private static final String DB_CONT_ID = "id";
     private static final String DB_CONT_NOM = "nombre";
     private static final String DB_CONT_APE = "apellidos";
+    private static final String DB_CONT_ALIAS = "alias";
+    private static final String DB_CONT_BIRTHDAY = "fecha_nacimiento";
+    private static final String DB_CONT_PREMIOS = "premios_recibidos";
+    private static final String DB_CONT_PAIS_RES = "pais_residencia";
+    private static final String DB_CONT_AREA_TRABAJO = "area_trabajo";
 
     //////////////////////////////////////////////////
     // MÉTODOS DE CONEXIÓN A LA BASE DE DATOS
@@ -183,8 +188,13 @@ public class DBManager {
             while (rs.next()) {
                 int id = rs.getInt(DB_CONT_ID);
                 String n = rs.getString(DB_CONT_NOM);
-                String d = rs.getString(DB_CONT_APE);
-                System.out.println(id + "\t" + n + "\t" + d);
+                String a = rs.getString(DB_CONT_APE);
+                String alias = rs.getString(DB_CONT_ALIAS);
+                Integer premios = rs.getInt(DB_CONT_PREMIOS);
+                Date fecha = rs.getDate(DB_CONT_BIRTHDAY);
+                String residencia = rs.getString(DB_CONT_PAIS_RES);
+                String trabajo = rs.getString(DB_CONT_AREA_TRABAJO);
+                System.out.println(id + "\t" + n + "\t" + a + "\t" + alias + "\t" + premios + "\t" + fecha + "\t" + residencia + "\t" + trabajo);
             }
             rs.close();
         } catch (SQLException ex) {
@@ -272,19 +282,25 @@ public class DBManager {
             }
 
             // Imprimimos su información por pantalla
-            int cid = rs.getInt(DB_CONT_ID);
+            int aid = rs.getInt(DB_CONT_ID);
             String nombre = rs.getString(DB_CONT_NOM);
-            String telefono = rs.getString(DB_CONT_APE);
-            System.out.println("Contacto " + cid + "\t" + nombre + "\t" + telefono);
+            String apellidos = rs.getString(DB_CONT_APE);
+
+            String alias = rs.getString(DB_CONT_ALIAS);
+            Integer premios = rs.getInt(DB_CONT_PREMIOS);
+            Date fecha = rs.getDate(DB_CONT_BIRTHDAY);
+            String residencia = rs.getString(DB_CONT_PAIS_RES);
+            String trabajo = rs.getString(DB_CONT_AREA_TRABAJO);
+            System.out.println(aid + "\t" + nombre + "\t" + apellidos + "\t" + alias + "\t" + premios + "\t" + fecha + "\t" + residencia + "\t" + trabajo);
 
         } catch (SQLException ex) {
-            System.out.println("Error al solicitar contacto " + id);
+            System.out.println("Error al solicitar autora " + id);
             ex.printStackTrace();
         }
     }
 
     /**
-     * Solicita a la BD insertar un nuevo registro 
+     * Solicita a la BD insertar un nuevo registro
      *
      * @param nombre nombre de la autora
      * @param apellidos dirección de la autora

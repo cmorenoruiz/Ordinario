@@ -6,6 +6,7 @@ package ordinario;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -75,6 +76,12 @@ public class Ordinario {
         }
     }
 
+    public static void imprimirListaDeAutoras(ArrayList<Autora> unaListaDeAutoras) {
+        for (Autora autora : unaListaDeAutoras) {
+            System.out.println(autora.toString());
+        }
+    }
+
     public static boolean menuPrincipal() {
         System.out.println("");
         System.out.println("MENU PRINCIPAL");
@@ -84,18 +91,16 @@ public class Ordinario {
         System.out.println("4. Mostrar el número de autoras por campo de trabajo");
         System.out.println("5. Añadir una autora por campo de trabajo");
         System.out.println("6. Mostrar una autora en concreto");
-        
+
         System.out.println("7. Salir");
         try {
             int opcion = pideInt("Elige una opción: ");
             switch (opcion) {
                 case 1:
-                    for (Autora autora : listaDeAutoras) {
-                        System.out.println(autora.toString());
-                    }
+                    imprimirListaDeAutoras(listaDeAutoras);
                     return false;
                 case 2:
-                    System.out.println("El número máximo de premios recibidos es "+numMaxDePremios());
+                    imprimirAutorasConMasPremios();
                     return false;
                 case 3:
                     return false;
@@ -104,6 +109,7 @@ public class Ordinario {
                 case 5:
                     return false;
                 case 6:
+                    mostrarUnaAutoraConcreta();
                     return false;
                 case 7:
                     return true;
@@ -117,6 +123,18 @@ public class Ordinario {
             return false;
         }
 
+    }
+
+    static void imprimirAutorasConMasPremios() {
+        System.out.println("El número máximo de premios recibidos es " + numMaxDePremios());
+        //Vamos aobtener un objeto opcional, que puede tener valor o no,
+        //Así me obligo a verificarlo
+        Optional<ArrayList<Autora>> posiblesAutoras = autorasConMasPremios();
+        if (posiblesAutoras.isPresent()) {
+            imprimirListaDeAutoras(posiblesAutoras.get());
+        } else {
+            System.out.println("No hay autoras con premios");
+        }
     }
 
     public static Autora creaAutora(Integer id, String nombre, String apellidos, String alias, Date birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
@@ -135,17 +153,37 @@ public class Ordinario {
         }
         return autora;
     }
-    
-    private static Integer numMaxDePremios(){
+
+    private static Integer numMaxDePremios() {
         // Obtener el máximo número de premios
         int maxPremios = 0;
         for (Autora autora : listaDeAutoras) {
             if (autora.getPremiosRecibidos() > maxPremios) {
                 maxPremios = autora.getPremiosRecibidos();
             }
-        }return maxPremios;  
+        }
+        return maxPremios;
     }
 
+    private static Optional<ArrayList<Autora>> autorasConMasPremios() {
+        Integer maximo = numMaxDePremios();
+        ArrayList<Autora> lasMasPremiadas = new ArrayList<Autora>();
+        for (Autora autora : listaDeAutoras) {
+            if (autora.getPremiosRecibidos() == maximo) {
+                lasMasPremiadas.add(autora);
+            }
+        }
+        //Si intentas devolverlo directamente, no compila
+//        return lasMasPremiadas;
+        if (lasMasPremiadas.isEmpty()) {
+            return Optional.empty(); // Si no hay autoras, retornamos Optional vacío
+        } else {
+            return Optional.of(lasMasPremiadas); // Si hay autoras, retornamos Optional con el ArrayList
+        }
+    }
+    public static void mostrarUnaAutoraConcreta(){
+        System.out.println(listaDeAutoras.get(pideInt("Escribe el id de la autora")).toString());
+    }
     /**
      * @param args the command line arguments
      */

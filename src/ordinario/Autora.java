@@ -6,17 +6,15 @@ package ordinario;
 
 import java.util.Date;
 
-
 /**
  *
  * @author cristina
  */
 public abstract class Autora {
-    
+
     //public enum Areas {PERIODISTA, ACTIVISTA, FILÓSOFA, ESCRITORA, DIRECTORADECINE, POETA, ACTRIZ,COMPOSITORA, ILUSTRADORA, BIOQUÍMICA, GENETISTA, FÍSICA};
-    
     private final Integer id;
-    
+
     private String nombre;
     private String apellidos;
     private String alias;
@@ -24,7 +22,7 @@ public abstract class Autora {
     private Integer premiosRecibidos;
     private String paisDeResidencia;
     private String areaDeTrabajo;
-    
+
     public Autora(Integer id, String nombre, String apellidos, String alias, Date birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
         this.id = id;
         this.nombre = nombre;
@@ -40,14 +38,18 @@ public abstract class Autora {
         this.id = id;
         this.alias = alias;
     }
+
     public abstract void crea();
 
     @Override
     public String toString() {
         return "Autora{" + "id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", alias=" + alias + ", birthday=" + birthday + ", premiosRecibidos=" + premiosRecibidos + ", paisDeResidencia=" + paisDeResidencia + ", areaDeTrabajo=" + areaDeTrabajo + '}';
     }
-    
-    
+
+    public Integer getId() {
+        return id;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -104,5 +106,4 @@ public abstract class Autora {
         this.areaDeTrabajo = areaDeTrabajo;
     }
 
-    
 }

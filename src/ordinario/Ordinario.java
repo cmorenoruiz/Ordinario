@@ -109,9 +109,9 @@ public class Ordinario {
                 case 5:
                     return false;
                 case 6:
-                    mostrarUnaAutoraConcreta();
+                    mostrarUnaAutoraporID();
                     return false;
-                case 7:
+                case 7://salir del bucle
                     return true;
                 default:
                     System.out.println("Opción elegida incorrecta");
@@ -181,9 +181,23 @@ public class Ordinario {
             return Optional.of(lasMasPremiadas); // Si hay autoras, retornamos Optional con el ArrayList
         }
     }
-    public static void mostrarUnaAutoraConcreta(){
-        System.out.println(listaDeAutoras.get(pideInt("Escribe el id de la autora")).toString());
+
+    public static void mostrarUnaAutoraporID() {
+        Autora autoraEncontrada=null;
+        Integer id = pideInt("Escribe el id de la autora: ");
+        for (Autora autora : listaDeAutoras) {
+            if (autora.getId() == id) {
+                autoraEncontrada=autora;
+                //Si la encuentro, salgo del bucle
+                break;
+            }
+        }
+        //Verifico que ha encontrado una autora
+        if (autoraEncontrada!=null){
+        System.out.println(autoraEncontrada.toString());
+        }else System.out.println("No hemos encontrado autora con el ID "+id);
     }
+
     /**
      * @param args the command line arguments
      */

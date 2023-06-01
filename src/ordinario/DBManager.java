@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -199,6 +200,32 @@ public class DBManager {
             rs.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public static ArrayList<Autora> mapeaAutoras() {
+
+        ArrayList<Autora> listaDeAutoras = new ArrayList();
+        try {
+            ResultSet rs = DBManager.getTablaAutoras(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            while (rs.next()) {
+                //Para cada registro, añade una autora al ArrayList
+                int id = rs.getInt(DB_CONT_ID);
+                String nombre = rs.getString(DB_CONT_NOM);
+                String apellidos = rs.getString(DB_CONT_APE);
+                String alias = rs.getString(DB_CONT_ALIAS);
+                Integer premios = rs.getInt(DB_CONT_PREMIOS);
+                Date fecha = rs.getDate(DB_CONT_BIRTHDAY);
+                String residencia = rs.getString(DB_CONT_PAIS_RES);
+                String trabajo = rs.getString(DB_CONT_AREA_TRABAJO);
+                Autora nuevaAutora = Ordinario.creaAutora(id, nombre, apellidos, alias, fecha, premios, residencia, trabajo);
+                listaDeAutoras.add(nuevaAutora);
+            }
+            rs.close();
+            return listaDeAutoras;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 

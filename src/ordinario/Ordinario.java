@@ -14,8 +14,8 @@ import java.util.Scanner;
  */
 public class Ordinario {
 
-    private static ArrayList <Autora> listaDeAutoras;
-    
+    private static ArrayList<Autora> listaDeAutoras;
+
     public static int pideInt(String mensaje) {
 
         while (true) {
@@ -56,7 +56,7 @@ public class Ordinario {
                 case 1:
                     if (DBManager.loadDriver() && DBManager.connect()) {
                         //leo dela BD y cargo en estructura
-                        listaDeAutoras=DBManager.mapeaAutoras();
+                        listaDeAutoras = DBManager.mapeaAutoras();
                         DBManager.close();
                         return true;
                     }
@@ -79,25 +79,33 @@ public class Ordinario {
         System.out.println("");
         System.out.println("MENU PRINCIPAL");
         System.out.println("1. Mostar mis autoras");
-        System.out.println("2. Nuevo contacto");
-        System.out.println("3. Modificar contacto");
-        System.out.println("4. Eliminar contacto");
-        System.out.println("5. Salir");
+        System.out.println("2. Mostrar la autora con más premios");
+        System.out.println("3. Mostrar el número de autoras por país de residencia");
+        System.out.println("4. Mostrar el número de autoras por campo de trabajo");
+        System.out.println("5. Añadir una autora por campo de trabajo");
+        System.out.println("6. Mostrar una autora en concreto");
+        
+        System.out.println("7. Salir");
         try {
             int opcion = pideInt("Elige una opción: ");
             switch (opcion) {
                 case 1:
-                    for (Autora autora: listaDeAutoras){
+                    for (Autora autora : listaDeAutoras) {
                         System.out.println(autora.toString());
                     }
                     return false;
                 case 2:
+                    System.out.println("El número máximo de premios recibidos es "+numMaxDePremios());
                     return false;
                 case 3:
                     return false;
                 case 4:
                     return false;
                 case 5:
+                    return false;
+                case 6:
+                    return false;
+                case 7:
                     return true;
                 default:
                     System.out.println("Opción elegida incorrecta");
@@ -126,6 +134,16 @@ public class Ordinario {
                 autora = new Creadora(id, nombre, apellidos, alias, birthday, premiosRecibidos, paisDeResidencia, areaDeTrabajo);
         }
         return autora;
+    }
+    
+    private static Integer numMaxDePremios(){
+        // Obtener el máximo número de premios
+        int maxPremios = 0;
+        for (Autora autora : listaDeAutoras) {
+            if (autora.getPremiosRecibidos() > maxPremios) {
+                maxPremios = autora.getPremiosRecibidos();
+            }
+        }return maxPremios;  
     }
 
     /**

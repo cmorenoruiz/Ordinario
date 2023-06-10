@@ -271,9 +271,17 @@ public class Ordinario {
     }
 
     public static void guardarDatosEnCSV() {
-
+        FileWriter fichero;
         try {
-            FileWriter fichero = new FileWriter("autoras_" + LocalDate.now() + "_" + LocalTime.now() + ".csv");
+            String nombreDeArchivo = "autoras_" + LocalDate.now() + "_" + LocalTime.now() + ".csv";
+            System.out.println("El nombre por defecto del archivo de salida es " + nombreDeArchivo);
+            String nombreAlternativo = pideLinea("Introduce otro nombre para el archivo o pulsa ENTER si aceptas ese nombre");
+            if (nombreAlternativo.isEmpty())  {
+                fichero = new FileWriter(nombreDeArchivo);
+            } else {
+                fichero = new FileWriter(nombreAlternativo);
+            }
+
             for (Autora autora : listaDeAutoras) {
                 fichero.write(autora.toStringCSV());
                 fichero.write("\n");

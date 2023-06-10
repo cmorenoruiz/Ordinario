@@ -4,7 +4,7 @@
  */
 package ordinario;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class Escritora extends Autora {
 
-    public Escritora(Integer id, String nombre, String apellidos, String alias, Date birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
+    public Escritora(Integer id, String nombre, String apellidos, String alias, LocalDate birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
         super(id, nombre, apellidos, alias, birthday, premiosRecibidos, paisDeResidencia, areaDeTrabajo);
     }
 

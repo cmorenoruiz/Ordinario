@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Scanner;
 
 /**
@@ -220,9 +222,10 @@ public class DBManager {
                 String alias = rs.getString(DB_CONT_ALIAS);
                 Integer premios = rs.getInt(DB_CONT_PREMIOS);
                 Date fecha = rs.getDate(DB_CONT_BIRTHDAY);
+                LocalDate fechaLocal =fecha.toLocalDate();
                 String residencia = rs.getString(DB_CONT_PAIS_RES);
                 String trabajo = rs.getString(DB_CONT_AREA_TRABAJO);
-                Autora nuevaAutora = Ordinario.creaAutora(id, nombre, apellidos, alias, fecha, premios, residencia, trabajo);
+                Autora nuevaAutora = Ordinario.creaAutora(id, nombre, apellidos, alias, fechaLocal, premios, residencia, trabajo);
                 listaDeAutoras.add(nuevaAutora);
             }
             rs.close();

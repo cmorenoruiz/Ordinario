@@ -4,7 +4,8 @@
  */
 package ordinario;
 
-import java.util.Date;
+import java.time.LocalDate;
+//import java.util.Date;
 
 /**
  *
@@ -18,12 +19,12 @@ public abstract class Autora {
     private String nombre;
     private String apellidos;
     private String alias;
-    private Date birthday;
+    private LocalDate birthday;
     private Integer premiosRecibidos;
     private String paisDeResidencia;
     private String areaDeTrabajo;
 
-    public Autora(Integer id, String nombre, String apellidos, String alias, Date birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
+    public Autora(Integer id, String nombre, String apellidos, String alias, LocalDate birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -74,11 +75,11 @@ public abstract class Autora {
         this.alias = alias;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

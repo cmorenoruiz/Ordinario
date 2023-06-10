@@ -4,13 +4,15 @@
  */
 package ordinario;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -124,6 +126,7 @@ public class Ordinario {
 
                     return false;
                 case 5:
+                    addAutora();
                     return false;
                 case 6:
                     mostrarUnaAutoraporID();
@@ -154,7 +157,7 @@ public class Ordinario {
         }
     }
 
-    public static Autora creaAutora(Integer id, String nombre, String apellidos, String alias, Date birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
+    public static Autora creaAutora(Integer id, String nombre, String apellidos, String alias, LocalDate birthday, Integer premiosRecibidos, String paisDeResidencia, String areaDeTrabajo) {
         Autora autora;
         switch (areaDeTrabajo) {
             case "Poeta":
@@ -251,6 +254,27 @@ public class Ordinario {
             int valor = entrada.getValue();
             System.out.println(clave + ": " + valor);
         }
+    }
+
+    public static LocalDate pideFecha(String mensaje) {
+        String pattern = "yyyy-MM-dd";
+//        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        //    sdf.setLenient(false);//Para evitar que incluya,horas, minutos, segundos e información sobre CET (zona horaria)
+        while (true) {
+            String fechaString = pideLinea(mensaje + " (en formato yyyy-MM-dd)");
+            try {
+                LocalDate fecha = LocalDate.parse(fechaString,formatter);
+                return fecha;
+            } catch (Exception e) {
+                System.out.println("No pudo convertirse lo que introduciste a formato fecha. Vuelve a intentarlo");
+            }
+        }
+    }
+
+    public static void addAutora() {
+
+        listaDeAutoras.add(creaAutora(61, pideLinea("Introduce nombre "), pideLinea("Introduce apelllidos "), pideLinea("Introduce alias "), pideFecha("Fecha de nacimiento "), pideInt("Número de premios "), pideLinea("Introduce país de residencia "), pideLinea("Introduce área de trabajo")));
     }
 
     /**

@@ -89,7 +89,7 @@ public class Ordinario {
         System.out.println("2. Mostrar la autora con más premios");
         System.out.println("3. Mostrar el número de autoras por país de residencia");
         System.out.println("4. Mostrar el número de autoras por campo de trabajo");
-        System.out.println("5. Añadir una autora por campo de trabajo");
+        System.out.println("5. Añadir una autora");
         System.out.println("6. Mostrar una autora en concreto");
 
         System.out.println("7. Salir");
@@ -195,6 +195,7 @@ public class Ordinario {
         //Verifico que ha encontrado una autora
         if (autoraEncontrada!=null){
         System.out.println(autoraEncontrada.toString());
+        autoraEncontrada.crea();
         }else System.out.println("No hemos encontrado autora con el ID "+id);
     }
 

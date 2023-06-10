@@ -26,6 +26,9 @@ public class DBManager {
     private static String IP_ADDRES_HOST = "localhost";
     private static final String IP_ADDRESS_IES = "10.230.109.71";
     private static final String IP_ADDRESS_HOME = "192.168.1.159";
+    private static final String IP_ADDRESS_DEFAULT = "192.168.11.65";
+
+
 
     private static final String DB_PORT = "3306";
     private static final String DB_NAME = "Autoras";
@@ -84,7 +87,7 @@ public class DBManager {
                 //Leemos del teclado para elegir la IP del servidor en casa o en el IES
                 System.out.println("Si estás en casa escribe H de Home, en el instituto I de IES");
                 Scanner sc = new Scanner(System.in);
-                String respuesta = sc.next("[hHiI]");
+                String respuesta = sc.next("[hHiIrR]");
                 switch (respuesta.toUpperCase()) {
                     case "H":
                         IP_ADDRES_HOST = IP_ADDRESS_HOME;
@@ -92,7 +95,8 @@ public class DBManager {
                     case "I":
                         IP_ADDRES_HOST = IP_ADDRESS_IES;
                         break;
-                    default:;
+                    default: IP_ADDRES_HOST = IP_ADDRESS_DEFAULT;
+;
                 }
             } catch (Exception ex) {
                 System.out.println("Te empeñas en escribir cualquier cosa en vez de una letra H o I");
@@ -100,7 +104,7 @@ public class DBManager {
             }
             DB_URL = "jdbc:mysql://" + IP_ADDRES_HOST + ":" + DB_PORT + "/" + DB_NAME + "?serverTimezone=UTC";
 
-            System.out.print("Conectando a la base de datos...");
+            System.out.print("Conectando a la base de datos "+DB_NAME+" en la IP "+IP_ADDRES_HOST+" ... ");
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
             System.out.println("OK!");
 

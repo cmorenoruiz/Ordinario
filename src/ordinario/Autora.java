@@ -44,9 +44,11 @@ public abstract class Autora {
 
     @Override
     public String toString() {
-        return "Autora{" + "id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", alias=" + alias + ", birthday=" + birthday + ", premiosRecibidos=" + premiosRecibidos + ", paisDeResidencia=" + paisDeResidencia + ", areaDeTrabajo=" + areaDeTrabajo + '}';
+        return "Autora con " + "id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", alias=" + alias + ", birthday=" + birthday + ", premiosRecibidos=" + premiosRecibidos + ", paisDeResidencia=" + paisDeResidencia + ", areaDeTrabajo=" + areaDeTrabajo + '.';
     }
-
+    public String toStringCSV() {
+        return id + "," + nombre + "," + apellidos + "," + alias + "," + birthday + "," + premiosRecibidos + "," + paisDeResidencia + "," + areaDeTrabajo;
+    }
     public Integer getId() {
         return id;
     }

@@ -4,6 +4,9 @@
  */
 package ordinario;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -96,7 +100,6 @@ public class Ordinario {
         System.out.println("4. Mostrar el número de autoras por campo de trabajo");
         System.out.println("5. Añadir una autora");
         System.out.println("6. Mostrar una autora en concreto");
-
         System.out.println("7. Salir");
         try {
             int opcion = pideInt("Elige una opción: ");
@@ -185,6 +188,17 @@ public class Ordinario {
         return maxPremios;
     }
 
+    private static Integer numMaxDeId() {
+        // Obtener el máximo número de premios
+        int maxId = 0;
+        for (Autora autora : listaDeAutoras) {
+            if (autora.getId() > maxId) {
+                maxId = autora.getId();
+            }
+        }
+        return maxId;
+    }
+
     private static Optional<ArrayList<Autora>> autorasConMasPremios() {
         Integer maximo = numMaxDePremios();
         ArrayList<Autora> lasMasPremiadas = new ArrayList<Autora>();
@@ -256,6 +270,21 @@ public class Ordinario {
         }
     }
 
+    public static void guardarDatosEnCSV() {
+
+        try {
+            FileWriter fichero = new FileWriter("autoras_" + LocalDate.now() + "_" + LocalTime.now() + ".csv");
+            for (Autora autora : listaDeAutoras) {
+                fichero.write(autora.toStringCSV());
+                fichero.write("\n");
+            }
+            fichero.close();
+        } catch (IOException ex) {
+            System.out.println("No pudo escribirse el archivo de salida");
+        }
+
+    }
+
     public static LocalDate pideFecha(String mensaje) {
         String pattern = "yyyy-MM-dd";
 //        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
@@ -264,7 +293,7 @@ public class Ordinario {
         while (true) {
             String fechaString = pideLinea(mensaje + " (en formato yyyy-MM-dd)");
             try {
-                LocalDate fecha = LocalDate.parse(fechaString,formatter);
+                LocalDate fecha = LocalDate.parse(fechaString, formatter);
                 return fecha;
             } catch (Exception e) {
                 System.out.println("No pudo convertirse lo que introduciste a formato fecha. Vuelve a intentarlo");
@@ -274,7 +303,7 @@ public class Ordinario {
 
     public static void addAutora() {
 
-        listaDeAutoras.add(creaAutora(61, pideLinea("Introduce nombre "), pideLinea("Introduce apelllidos "), pideLinea("Introduce alias "), pideFecha("Fecha de nacimiento "), pideInt("Número de premios "), pideLinea("Introduce país de residencia "), pideLinea("Introduce área de trabajo")));
+        listaDeAutoras.add(creaAutora(numMaxDeId() + 1, pideLinea("Introduce nombre "), pideLinea("Introduce apelllidos "), pideLinea("Introduce alias "), pideFecha("Fecha de nacimiento "), pideInt("Número de premios "), pideLinea("Introduce país de residencia "), pideLinea("Introduce área de trabajo ")));
     }
 
     /**
@@ -292,6 +321,7 @@ public class Ordinario {
             while (!salir) {
                 salir = menuPrincipal();
             }
+            guardarDatosEnCSV();
         }
     }
 

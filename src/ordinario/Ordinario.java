@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -103,8 +106,22 @@ public class Ordinario {
                     imprimirAutorasConMasPremios();
                     return false;
                 case 3:
+                    imprimirNumAutorasPorCampoX(7);
                     return false;
                 case 4:
+                    imprimirNumAutorasPorCampoX(8);
+//                    //Aquí pruebo el resto de llamadas a esta función                  
+//                    imprimirNumAutorasPorCampoX(1);
+//                    imprimirNumAutorasPorCampoX(2);
+//                    imprimirNumAutorasPorCampoX(3);
+//                    imprimirNumAutorasPorCampoX(4);
+//                    imprimirNumAutorasPorCampoX(5);
+//                    imprimirNumAutorasPorCampoX(6);
+//
+//                    //Estas muestran unmensaje de error
+//                    imprimirNumAutorasPorCampoX(9);
+//                    imprimirNumAutorasPorCampoX(0);
+
                     return false;
                 case 5:
                     return false;
@@ -183,20 +200,57 @@ public class Ordinario {
     }
 
     public static void mostrarUnaAutoraporID() {
-        Autora autoraEncontrada=null;
+        Autora autoraEncontrada = null;
         Integer id = pideInt("Escribe el id de la autora: ");
         for (Autora autora : listaDeAutoras) {
             if (autora.getId() == id) {
-                autoraEncontrada=autora;
+                autoraEncontrada = autora;
                 //Si la encuentro, salgo del bucle
                 break;
             }
         }
         //Verifico que ha encontrado una autora
-        if (autoraEncontrada!=null){
-        System.out.println(autoraEncontrada.toString());
-        autoraEncontrada.crea();
-        }else System.out.println("No hemos encontrado autora con el ID "+id);
+        if (autoraEncontrada != null) {
+            System.out.println(autoraEncontrada.toString());
+            autoraEncontrada.crea();
+        } else {
+            System.out.println("No hemos encontrado autora con el ID " + id);
+        }
+    }
+
+    public static void imprimirNumAutorasPorCampoX(int numDeCampo) {
+        HashMap<String, Integer> ocurrenciasPorCampo = new HashMap<>();
+        //Primero recorro listaDeAutoras para ir contabilizando en "cuenta"
+        for (Autora autora : listaDeAutoras) {
+            String clave;
+            try {
+                clave = autora.getCampoXToString(numDeCampo);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage() + " Ha introducido " + numDeCampo);
+                return;
+                //No debe seguir intentando imprimir Autoras por campo X
+            }
+            if (ocurrenciasPorCampo.containsKey(clave)) {
+                // Si la clave existe, obtener el valor actual y sumar uno
+                int valorActual = ocurrenciasPorCampo.get(clave);
+                ocurrenciasPorCampo.put(clave, valorActual + 1);
+            } else {
+                // Si la clave no existe, agregarla con valor 1
+                ocurrenciasPorCampo.put(clave, 1);
+            }
+        }
+        //Imprime el número de Autoras por cada ocurrencia del campo X
+        imprimirHashMap(ocurrenciasPorCampo);
+    }
+
+    public static void imprimirHashMap(HashMap<String, Integer> hashMap) {
+        System.out.println("");
+        //Para cada entrada del HashMap, imprime la clave y el valor
+        for (HashMap.Entry<String, Integer> entrada : hashMap.entrySet()) {
+            String clave = entrada.getKey();
+            int valor = entrada.getValue();
+            System.out.println(clave + ": " + valor);
+        }
     }
 
     /**

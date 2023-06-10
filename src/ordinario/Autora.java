@@ -106,4 +106,36 @@ public abstract class Autora {
         this.areaDeTrabajo = areaDeTrabajo;
     }
 
+    /**
+     *
+     * @param numDeCampo
+     * @return valueToReturn
+     * @throws Exception
+     */
+    //Devuelve el campo indicado en String
+    public String getCampoXToString(int numDeCampo) throws Exception{
+        String valueToReturn="";
+        switch (numDeCampo){
+                case 1: valueToReturn=getId().toString();
+                    break;
+                case 2: valueToReturn=getNombre();
+                    break;
+                case 3: valueToReturn=getApellidos();
+                    break;
+                case 4: valueToReturn=getAlias();
+                    break;
+                case 5: valueToReturn=getBirthday().toString();
+                    break;                    
+                case 6: valueToReturn=getPremiosRecibidos().toString();
+                    break;
+                case 7: valueToReturn=getPaisDeResidencia();
+                    break;
+                case 8: valueToReturn=getAreaDeTrabajo();
+                    break;
+                default: throw new Exception("Ha intentado convertir a String un campo inexistente en la clase Autora");
+        }
+        return valueToReturn;
+        
+    }
+
 }

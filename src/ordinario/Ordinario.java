@@ -244,7 +244,7 @@ public class Ordinario {
 
     public static void imprimirNumAutorasPorCampoX(int numDeCampo) {
         HashMap<String, Integer> ocurrenciasPorCampo = new HashMap<>();
-        //Primero recorro listaDeAutoras para ir contabilizando en "cuenta"
+        //Primero recorro listaDeAutoras para ir contabilizando en "ocurrenciasPorCampo"
         for (Autora autora : listaDeAutoras) {
             String clave;
             try {
@@ -302,11 +302,9 @@ public class Ordinario {
 
     public static LocalDate pideFecha(String mensaje) {
         String pattern = "yyyy-MM-dd";
-//        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-        //    sdf.setLenient(false);//Para evitar que incluya,horas, minutos, segundos e información sobre CET (zona horaria)
         while (true) {
-            String fechaString = pideLinea(mensaje + " (en formato yyyy-MM-dd)");
+            String fechaString = pideLinea(mensaje + " (en formato yyyy-MM-dd) ");
             try {
                 LocalDate fecha = LocalDate.parse(fechaString, formatter);
                 return fecha;
@@ -358,15 +356,12 @@ public class Ordinario {
             }//Termina de leer el fichero.
             br.close();
             System.out.println("Leídas autoras desde archivo CSV");
-            return lista;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            } catch (FileNotFoundException e) {
             System.out.println("No puede leerse el archivo " + CSV_FILE_IN);
         } catch (IOException e) {
-            e.printStackTrace();
             System.out.println("No puede cerrarse el archivo de entrada " + CSV_FILE_IN);
         }
-        return null;//Devuelve lista vacía en caso de Excepción
+        return lista;//Devuelve lista vacía en caso de Excepción
     }
 
     /**

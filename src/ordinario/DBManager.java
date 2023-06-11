@@ -216,7 +216,7 @@ public class DBManager {
             ResultSet rs = DBManager.getTablaAutoras(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             while (rs.next()) {
                 //Para cada registro, añade una autora al ArrayList
-                int id = rs.getInt(DB_CONT_ID);
+                Integer id = rs.getInt(DB_CONT_ID);
                 String nombre = rs.getString(DB_CONT_NOM);
                 String apellidos = rs.getString(DB_CONT_APE);
                 String alias = rs.getString(DB_CONT_ALIAS);

@@ -4,9 +4,14 @@
  */
 package ordinario;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 public class Ordinario {
 
     private static ArrayList<Autora> listaDeAutoras;
+    private static final String CSV_FILE_IN = "autoras.csv";
 
     public static int pideInt(String mensaje) {
 
@@ -73,7 +79,8 @@ public class Ordinario {
                     ;
                 case 2:
                     //Aquí llamaríamos a leer del csv();
-                    return false;//por ahora simulo que noleo
+                    listaDeAutoras = mapeaAutorasDesdeCSV();
+                    return true;//por ahora simulo que noleo
                 default:
                     System.out.println("Opción elegida incorrecta");
                     return false;
@@ -276,7 +283,7 @@ public class Ordinario {
             String nombreDeArchivo = "autoras_" + LocalDate.now() + "_" + LocalTime.now() + ".csv";
             System.out.println("El nombre por defecto del archivo de salida es " + nombreDeArchivo);
             String nombreAlternativo = pideLinea("Introduce otro nombre para el archivo o pulsa ENTER si aceptas ese nombre");
-            if (nombreAlternativo.isEmpty())  {
+            if (nombreAlternativo.isEmpty()) {
                 fichero = new FileWriter(nombreDeArchivo);
             } else {
                 fichero = new FileWriter(nombreAlternativo);
@@ -312,6 +319,54 @@ public class Ordinario {
     public static void addAutora() {
 
         listaDeAutoras.add(creaAutora(numMaxDeId() + 1, pideLinea("Introduce nombre "), pideLinea("Introduce apelllidos "), pideLinea("Introduce alias "), pideFecha("Fecha de nacimiento "), pideInt("Número de premios "), pideLinea("Introduce país de residencia "), pideLinea("Introduce área de trabajo ")));
+    }
+
+    public static ArrayList<Autora> mapeaAutorasDesdeCSV() {
+
+        ArrayList<Autora> lista = new ArrayList();
+
+        String linea;
+        String csvSeparator = ","; // Separador utilizado en el archivo CSV
+
+        try (BufferedReader br = new BufferedReader(new FileReader(CSV_FILE_IN))) {
+            while ((linea = br.readLine()) != null) {
+                String[] campos = linea.split(csvSeparator);
+                String pattern = "yyyy-MM-dd";
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                LocalDate fechaLocal;
+                try {
+                    Integer id = Integer.valueOf(campos[0]);
+                    String nombre = campos[1];
+                    String apellidos = campos[2];
+                    String alias = campos[3];
+                    fechaLocal = LocalDate.parse(campos[4], formatter);
+                    Integer premios = 0;
+                    //Si no tiene premios
+                    if (!campos[5].isEmpty()) {
+                        premios = Integer.valueOf(campos[5]);
+                    }
+                    String residencia = campos[6];
+                    String trabajo = campos[7];
+                    Autora nuevaAutora = creaAutora(id, nombre, apellidos, alias, fechaLocal, premios, residencia, trabajo);
+                    lista.add(nuevaAutora);
+                } catch (NumberFormatException ex) {
+                    System.out.println("No pudo convertirse un string a Integer");
+                } catch (Exception e) {
+                    System.out.println("No pudo convertirse una fecha de nacimiento");
+                    //Seguirá intentando leer autoras del archivo CSV
+                }
+            }//Termina de leer el fichero.
+            br.close();
+            System.out.println("Leídas autoras desde archivo CSV");
+            return lista;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("No puede leerse el archivo " + CSV_FILE_IN);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("No puede cerrarse el archivo de entrada " + CSV_FILE_IN);
+        }
+        return null;//Devuelve lista vacía en caso de Excepción
     }
 
     /**
